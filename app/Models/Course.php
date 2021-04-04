@@ -11,4 +11,9 @@ class Course extends Model
     protected $fillable = [ 
         'title', 'description', 'price'
     ];
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
+    }
 }

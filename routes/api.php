@@ -2,8 +2,9 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Auth\UserController;
-use App\Http\Controllers\CourseController;
+use App\Http\Controllers\User\Auth\UserController;
+use App\Http\Controllers\Admin\AdminCourseController;
+use App\Http\Controllers\User\UserCourseController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,10 +27,10 @@ Route::post("login", [UserController::class, "login"]);
 Route::middleware('auth:api')->group(function() {
     Route::get("user", [UserController::class, "user"]);
 
-    // Route::resource('courses', CourseController::class);
-    Route::resource('courses', CourseController::class)->only(['index', 'show']);
+    Route::resource('courses', UserCourseController::class)->only(['index', 'show']);
+    Route::post('courses/add/{course_id}', [UserCourseController::class, "enroll"]);
 
     Route::group(['prefix' => 'admin'], function() {
-    Route::resource('courses', CourseController::class)->only(['store', 'update', 'destroy']);
+        Route::resource('courses', AdminCourseController::class)->only(['store', 'update', 'destroy']);
     });
 });
