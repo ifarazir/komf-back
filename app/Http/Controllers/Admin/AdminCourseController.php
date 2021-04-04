@@ -1,29 +1,16 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Models\Course;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class CourseController extends Controller
+use App\Http\Controllers\Controller;
+
+class AdminCourseController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-        $courses = Course::all();
-        if (count($courses) > 0) {
-            return response()->json(["status" => "success", "count" => count($courses), "data" => $courses], 200);
-        } else {
-            return response()->json(["status" => "failed", "count" => count($courses), "message" => "Failed! no Course found"], 200);
-        }
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -53,24 +40,6 @@ class CourseController extends Controller
             return response()->json(["status" => "failed", "message" => "Whoops! Course not created"]);
         }
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-        $course = Course::where("id", $id)->first();
-        if (!is_null($course)) {
-            return response()->json(["status" => "success", "data" => $course], 200);
-        } else {
-            return response()->json(["status" => "failed", "message" => "Failed! no Course found"], 200);
-        }
-    }
-
 
     /**
      * Update the specified resource in storage.
