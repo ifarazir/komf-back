@@ -19,9 +19,9 @@ class UserCourseController extends Controller
      public function index()
     {
         //
-        $courses = Course::all();
+        $courses = Course::paginate(5);
         if (count($courses) > 0) {
-            return response()->json(["status" => "success", "count" => count($courses), "data" => $courses], 200);
+            return response()->json(["status" => "success", "count" => count($courses), "data" => $courses->makeHidden(['created_at','updated_at'])], 200);
         } else {
             return response()->json(["status" => "failed", "count" => count($courses), "message" => "Failed! no Course found"], 200);
         }
@@ -53,5 +53,10 @@ class UserCourseController extends Controller
         } else {
             return response()->json(["status" => "failed", "message" => "Failed! no Course found"], 200);
         }
+    }
+
+    public function UserCourses() {
+        $user = Auth::user();
+        return response()->json(["status" => "success", "data" => $user->courses->makeHidden(['pivot', 'created_at', 'updated_at'])], 200);
     }
 }

@@ -28,7 +28,8 @@ Route::middleware('auth:api')->group(function() {
     Route::get("user", [UserController::class, "user"]);
 
     Route::resource('courses', UserCourseController::class)->only(['index', 'show']);
-    Route::post('courses/add/{course_id}', [UserCourseController::class, "enroll"]);
+    Route::post('courses/add/{course}', [UserCourseController::class, "enroll"]);
+    Route::get('user/courses', [UserCourseController::class, "UserCourses"]);
 
     Route::group(['prefix' => 'admin'], function() {
         Route::resource('courses', AdminCourseController::class)->only(['store', 'update', 'destroy']);
