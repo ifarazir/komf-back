@@ -31,7 +31,10 @@ Route::middleware('auth:api')->group(function() {
     Route::post('courses/add/{course}', [UserCourseController::class, "enroll"]);
     Route::get('user/courses', [UserCourseController::class, "UserCourses"]);
 
+    
     Route::group(['prefix' => 'admin'], function() {
         Route::resource('courses', AdminCourseController::class)->only(['store', 'update', 'destroy']);
     });
 });
+
+Route::get('request', [UserCourseController::class, 'test']);

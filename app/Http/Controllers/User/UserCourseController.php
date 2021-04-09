@@ -59,4 +59,11 @@ class UserCourseController extends Controller
         $user = Auth::user();
         return response()->json(["status" => "success", "data" => $user->courses->makeHidden(['pivot', 'created_at', 'updated_at'])], 200);
     }
+
+
+    public function test(Request $request)
+    {
+        //
+        dd($request);
+    }
 }
