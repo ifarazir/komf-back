@@ -73,7 +73,7 @@ class UserController extends Controller
     public function user() {
         $user=Auth::user();
         if(!is_null($user)) {
-            if(isset($user->roles)){
+            if(isset($user->roles[0])){
                 $user->role = $user->roles[0]->name;
             }
             else {
