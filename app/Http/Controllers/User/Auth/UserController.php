@@ -72,8 +72,13 @@ class UserController extends Controller
     // User Detail
     public function user() {
         $user=Auth::user();
-        $user->role = $user->roles[0]->name;
-        if(!is_null($user)) { 
+        if(!is_null($user)) {
+            if(isset($user->roles)){
+                $user->role = $user->roles[0]->name;
+            }
+            else {
+                $user->role = 'user';
+            }
             return response()->json(["status" => "success", "data" => $user->makeHidden('roles')]);
         }
 
