@@ -7,10 +7,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Services\Permission\Traits\HasPermissions;
+use App\Services\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable, HasApiTokens;
+    use HasFactory, Notifiable, HasApiTokens, HasPermissions, HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -47,5 +49,10 @@ class User extends Authenticatable
     public function courses()
     {
         return $this->belongsToMany(Course::class);
+    }
+
+    public function progress()
+    {
+        return $this->belongsToMany(Lesson_Vocab::class, 'user_progress', 'user_id', 'lesson_vocab_id');
     }
 }

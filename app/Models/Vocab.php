@@ -5,20 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Course extends Model
+class Vocab extends Model
 {
     use HasFactory;
-    protected $fillable = [ 
-        'title', 'description', 'price'
-    ];
 
-    public function users()
-    {
-        return $this->belongsToMany(User::class);
-    }
+    protected $fillable = [ 
+        'word', 
+        'syn',
+        'def',
+        'ex1',
+        'ex2'
+    ];
 
     public function lessons()
     {
-        return $this->hasMany(Lesson::class);
+        return $this->belongsToMany(Lesson::class);
     }
 }

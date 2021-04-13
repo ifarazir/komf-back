@@ -27,17 +27,15 @@ class UserCourseController extends Controller
         }
     }
 
-
     /**
      * Display the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-     public function show($id)
+     public function show(Course $course)
     {
         //
-        $course = Course::where("id", $id)->first();
         if (!is_null($course)) {
             return response()->json(["status" => "success", "data" => $course], 200);
         } else {
@@ -60,10 +58,8 @@ class UserCourseController extends Controller
         return response()->json(["status" => "success", "data" => $user->courses->makeHidden(['pivot', 'created_at', 'updated_at'])], 200);
     }
 
-
-    public function test(Request $request)
-    {
-        //
-        dd($request);
+    public function CourseLessons(Course $course) {
+        $lessons = $course->lessons;
+        return response()->json(["status" => "success", "data" => $lessons->makeHidden(['created_at', 'updated_at', 'course_id'])], 200);
     }
 }
