@@ -53,6 +53,16 @@ class UserCourseController extends Controller
         }
     }
 
+    public function unenroll(Course $course) {
+        $user = Auth::user();
+        if (!is_null($course)) {
+            $course->users()->detach($user);
+            return response()->json(["status" => "success", "message" => "Course UnEnroll Success"], 200);
+        } else {
+            return response()->json(["status" => "failed", "message" => "Failed! no Course found"], 200);
+        }
+    }
+
     public function UserCourses() {
         $user = Auth::user();
         return response()->json(["status" => "success", "data" => $user->courses->makeHidden(['pivot', 'created_at', 'updated_at'])], 200);
