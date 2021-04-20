@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Vocab;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 
 class AdminVocabController extends Controller
 {
@@ -90,9 +91,33 @@ class AdminVocabController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Vocab $vocab)
     {
+
+        $validator = Validator::make($request->all(), [
+            "word" => "required",
+            "syn" => "required",
+            "def" => "required",
+            "ex1" => "required",
+            "ex2" => "required"
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(["status" => "failed", "validation_errors" => $validator->errors()]);
+        }
         //
+        $input = $request->all();
+        $user = Auth::user();
+
+        if (!is_null($user)) {
+
+            // update post
+            $update = $vocab->update($request->all());
+
+            return response()->json(["status" => "success", "message" => "Success! Vocab updated", "data" => $update], 200);
+        } else {
+            return response()->json(["status" => "failed", "message" => "Un-authorized user"], 403);
+        }
     }
 
     /**
@@ -104,5 +129,15 @@ class AdminVocabController extends Controller
     public function destroy($id)
     {
         //
+        $user = Auth::user();
+        
+        if(!is_null($user)) {
+            $vocab = Vocab::where("id", $vocab->id)->delete();
+            return response()->json(["status" => "success", "message" => "Success! Vocab deleted"], 200);
+        }
+
+        else {
+            return response()->json(["status" => "failed", "message" => "Un-authorized user"], 403);
+        }
     }
 }

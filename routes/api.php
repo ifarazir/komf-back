@@ -32,7 +32,8 @@ Route::post("login", [UserController::class, "login"]);
 
 Route::middleware('auth:api')->group(function() {
     Route::get("user", [UserController::class, "user"]);
-
+    Route::post("logout", [UserController::class, "logout"]);
+    
     Route::resource('courses', UserCourseController::class)->only(['index', 'show']);
     Route::post('courses/add/{course}', [UserCourseController::class, "enroll"]);
     Route::post('courses/remove/{course}', [UserCourseController::class, "unenroll"]);

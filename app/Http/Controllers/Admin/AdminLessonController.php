@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Lesson;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AdminLessonController extends Controller
 {
@@ -65,19 +66,8 @@ class AdminLessonController extends Controller
         if (!is_null($lesson)) {
             return response()->json(["status" => "success", "data" => $lesson], 200);
         } else {
-            return response()->json(["status" => "failed", "message" => "Failed! no Course found"], 200);
+            return response()->json(["status" => "failed", "message" => "Failed! no Lesson found"], 200);
         }
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
     }
 
     /**
@@ -87,9 +77,30 @@ class AdminLessonController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Lesson $lesson)
     {
         //
+        $input = $request->all();
+        $user = Auth::user();
+
+        if (!is_null($user)) {
+
+            // validation
+            $validator = Validator::make($request->all(), [
+                "title" => "required",
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json(["status" => "failed", "validation_errors" => $validator->errors()]);
+            }
+
+            // update post
+            $update = $lesson->update($request->all());
+
+            return response()->json(["status" => "success", "message" => "Success! Lesson updated", "data" => $update], 200);
+        } else {
+            return response()->json(["status" => "failed", "message" => "Un-authorized user"], 403);
+        }
     }
 
     /**
@@ -98,8 +109,18 @@ class AdminLessonController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Lesson $lesson)
     {
         //
+        $user = Auth::user();
+        
+        if(!is_null($user)) {
+            $lesson = Lesson::where("id", $lesson->id)->delete();
+            return response()->json(["status" => "success", "message" => "Success! Lesson deleted"], 200);
+        }
+
+        else {
+            return response()->json(["status" => "failed", "message" => "Un-authorized user"], 403);
+        }
     }
 }
