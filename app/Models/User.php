@@ -55,4 +55,16 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Lesson_Vocab::class, 'user_progress', 'user_id', 'lesson_vocab_id');
     }
+
+    public function calculateProgress(Lesson $lesson)
+    {
+        $lvs = 0;
+        $lesson_vocab = Lesson_Vocab::where('lesson_id',$lesson->id)->get();
+
+        foreach ($lesson_vocab as $lv) {
+            auth()->user()->progress->contains($lv) ? $lvs +=1 : null;
+        }
+
+        return round(($lvs/($lesson_vocab->count()))*100);
+    }
 }

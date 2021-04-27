@@ -140,4 +140,6 @@ class AdminVocabController extends Controller
             return response()->json(["status" => "failed", "message" => "Un-authorized user"], 403);
         }
     }
+
+    
 }

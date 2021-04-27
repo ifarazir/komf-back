@@ -123,4 +123,11 @@ class AdminLessonController extends Controller
             return response()->json(["status" => "failed", "message" => "Un-authorized user"], 403);
         }
     }
+
+    public function lessonVocabs(Request $request,Lesson $lesson)
+    {
+        $lesson->vocabs()->syncWithoutDetaching($request['vocabs']);
+
+        return response()->json(["status" => "success", "message" => "Success! Sync Vocab To Lesson"], 200);
+    }
 }
