@@ -64,7 +64,11 @@ class User extends Authenticatable
         foreach ($lesson_vocab as $lv) {
             auth()->user()->progress->contains($lv) ? $lvs +=1 : null;
         }
-
-        return round(($lvs/($lesson_vocab->count()))*100);
+        if($lesson_vocab->count() != 0){
+            return round(($lvs/($lesson_vocab->count()))*100);
+        }
+        else{
+            return 0;
+        }
     }
 }
