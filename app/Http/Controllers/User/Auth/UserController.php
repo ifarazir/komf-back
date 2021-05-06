@@ -51,15 +51,15 @@ class UserController extends Controller
             return response()->json(["validation_errors" => $validator->errors()]);
         }
 
-        $user           =       User::where("email", $request->email)->first();
+        $user = User::where("email", $request->email)->first();
 
         if(is_null($user)) {
             return response()->json(["status" => "failed", "message" => "Failed! email not found"]);
         }
 
         if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){
-            $user       =       Auth::user();
-            $token      =       $user->createToken('token')->plainTextToken;
+            $user = Auth::user();
+            $token = $user->createToken('token')->plainTextToken;
 
             return response()->json(["status" => "success", "login" => true, "token" => $token, "data" => $user]);
         }
@@ -96,5 +96,16 @@ class UserController extends Controller
         else {
             return response()->json(["status" => "failed", "message" => "Whoops! no user found"]);
         }        
+    }
+    
+    public function ChangePassword(Request $request) {
+        $user=Auth::user();
+        if ((Hash::check($request->old_password, $user->password)) == false) {
+            return response()->json(["status" => "failed", "message" => "Old Password Incorrect!"]);
+        }
+        else {
+            User::where('id', $user->id)->update(['password' => Hash::make($request->new_password)]);
+            return response()->json(["status" => "success", "message" => "Password Changed Successfully!"]);
+        }
     }
 }

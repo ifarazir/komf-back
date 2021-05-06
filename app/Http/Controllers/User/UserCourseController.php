@@ -42,7 +42,10 @@ class UserCourseController extends Controller
     {
         //
         if (!is_null($course)) {
-            return response()->json(["status" => "success", "data" => $course->with('lessons')->get()], 200);
+            if ($course->photo != null) {
+                $course['photo_url'] = 'storage/' . $course->photo->filePath();
+            }
+            return response()->json(["status" => "success", "data" => $course->makeHidden(['created_at','updated_at','photo','photo_id'])], 200);
         } else {
             return response()->json(["status" => "failed", "message" => "Failed! no Course found"], 200);
         }
@@ -74,12 +77,17 @@ class UserCourseController extends Controller
     }
 
     public function CourseLessons(Course $course) {
-        $lessons = $course->lessons;
 
-        foreach ($lessons as $lesson) {
-            $lesson->prgress = auth()->user()->calculateProgress($lesson);
+        if (!is_null($course)) {
+            $lessons = $course->lessons;
+
+            foreach ($lessons as $lesson) {
+                $lesson->prgress = auth()->user()->calculateProgress($lesson);
+            }
+            return response()->json(["status" => "success", "data" => $lessons->makeHidden(['created_at', 'updated_at', 'course_id'])], 200);
+        } else {
+            return response()->json(["status" => "failed", "message" => "Failed! no Course found"], 200);
         }
         
-        return response()->json(["status" => "success", "data" => $lessons->makeHidden(['created_at', 'updated_at', 'course_id'])], 200);
     }
 }

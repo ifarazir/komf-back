@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Lesson;
+use App\Models\Lesson_Vocab;
 use App\Models\Vocab;
 use Illuminate\Support\Facades\DB;
 
@@ -27,7 +28,13 @@ class UserLessonController extends Controller
     }
 
     public function LessonVocabs(Lesson $lesson) {
-        $vocabs = $lesson->vocabs;
+        $lesson_vocabs = Lesson_Vocab::where('lesson_id',$lesson->id)->get();
+        dd($lesson_vocabs);
+        foreach ($vocabs as $vocab) {
+            dd($lesson_vocab);
+            dd(auth()->user()->progress->contains($vocab));
+            // $vocab->check = 
+        }
         return response()->json(["status" => "success", "data" => $vocabs->makeHidden(['created_at', 'updated_at', 'pivot'])], 200);
     }
 
