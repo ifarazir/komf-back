@@ -114,7 +114,7 @@ class AdminLessonController extends Controller
         //
         $user = Auth::user();
         
-        if(!is_null($user)) {
+        if(!is_null($lesson)) {
             $lesson = Lesson::where("id", $lesson->id)->delete();
             return response()->json(["status" => "success", "message" => "Success! Lesson deleted"], 200);
         }
