@@ -19,7 +19,7 @@ class UserCourseController extends Controller
      public function index()
     {
         //
-        $courses = Course::paginate(5);
+        $courses = Course::with('lessons')->paginate(5);
         foreach ($courses as $course) {
             if ($course->photo != null) {
                 $course['photo_url'] = 'storage/' . $course->photo->filePath();
