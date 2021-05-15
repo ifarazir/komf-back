@@ -26,7 +26,6 @@ class UserQQuestionController extends Controller
         $request['lessons_id'] = explode(",", $request['lessons_id']);
 
         $questions = QQuestion::whereIn('lesson_id', $request['lessons_id'])->get();
-        dd(count($questions));
         if (count($questions) < $request->limit) {
             return response()->json(["status" => "failed", "message" => "Failed! Limit Question is bigger than question count!"], 200);
         }
