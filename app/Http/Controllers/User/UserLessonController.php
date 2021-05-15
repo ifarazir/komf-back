@@ -27,14 +27,9 @@ class UserLessonController extends Controller
         }
     }
 
-    public function LessonVocabs(Lesson $lesson) {
-        $lesson_vocabs = Lesson_Vocab::where('lesson_id',$lesson->id)->get();
-        dd($lesson_vocabs);
-        foreach ($vocabs as $vocab) {
-            dd($lesson_vocab);
-            dd(auth()->user()->progress->contains($vocab));
-            // $vocab->check = 
-        }
+    public function LessonVocabs(Lesson $lesson)
+    {
+        $vocabs = $lesson->vocabs;
         return response()->json(["status" => "success", "data" => $vocabs->makeHidden(['created_at', 'updated_at', 'pivot'])], 200);
     }
 
