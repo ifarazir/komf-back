@@ -23,7 +23,6 @@ class UserQQuestionController extends Controller
         }
 
         $request['lessons_id'] = explode(",", $request['lessons_id']);
-        dd($request['lessons_id']);
 
         $questions = QQuestion::whereIn('lesson_id', $request['lessons_id'])->get()->toArray();
 
