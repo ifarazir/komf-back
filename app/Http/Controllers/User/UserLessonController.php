@@ -20,7 +20,7 @@ class UserLessonController extends Controller
      */
      public function index()
     {
-        $lessons = Lesson::paginate(5);
+        $lessons = Lesson::get();
         if (count($lessons) > 0) {
             return response()->json(["status" => "success", "count" => count($lessons), "data" => $lessons->makeHidden(['created_at','updated_at'])], 200);
         } else {
