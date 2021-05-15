@@ -43,6 +43,7 @@ Route::middleware('auth:api')->group(function () {
     Route::get('courses/{course}/lessons', [UserCourseController::class, "CourseLessons"]);
     Route::get('user/courses', [UserCourseController::class, "UserCourses"]);
 
+    Route::get('lessons', [UserLessonController::class, "index"]);
     Route::get('lessons/{lesson}', [UserLessonController::class, "show"]);
     Route::post('lesson/vocab/check', [UserLessonController::class, "lessonCheck"]);
     Route::get('lessons/{lesson}/vocabs', [UserLessonController::class, "LessonVocabs"]);

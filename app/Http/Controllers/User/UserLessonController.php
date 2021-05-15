@@ -18,6 +18,16 @@ class UserLessonController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+     public function index()
+    {
+        $lessons = Lesson::paginate(5);
+        if (count($lessons) > 0) {
+            return response()->json(["status" => "success", "count" => count($lessons), "data" => $lessons->makeHidden(['created_at','updated_at'])], 200);
+        } else {
+            return response()->json(["status" => "failed", "count" => count($lessons), "message" => "Failed! no Lesson found"], 200);
+        }
+    }
+    
      public function show(Lesson $lesson)
     {
         if (!is_null($lesson)) {
