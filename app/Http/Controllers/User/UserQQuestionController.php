@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Models\Lesson;
 use App\Models\QQuestion;
+use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 
 class UserQQuestionController extends Controller
@@ -29,7 +30,7 @@ class UserQQuestionController extends Controller
         if (count($questions) < $request->limit) {
             return response()->json(["status" => "failed", "message" => "Failed! Limit Question is bigger than question count!"], 200);
         }
-        $items = Arr::random($questions, $request->limit);
+        $items = Arr::random($questions->toArray(), $request->limit);
 
         if (!is_null($items)) {
             return response()->json(["status" => "success", "data" => $items], 200);
