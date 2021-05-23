@@ -59,7 +59,6 @@ class UserController extends Controller
 
         if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){
             $user = Auth::user();
-            $user->tokens()->where('id', $user->currentAccessToken()->id)->delete();
             $token = $user->createToken('token')->plainTextToken;
 
             return response()->json(["status" => "success", "login" => true, "token" => $token, "data" => $user]);
@@ -106,7 +105,8 @@ class UserController extends Controller
         }
         else {
             User::where('id', $user->id)->update(['password' => Hash::make($request->new_password)]);
-            return response()->json(["status" => "success", "message" => "Password Changed Successfully!"]);
+            $user->tokens()->where('id', $user->currentAccessToken()->id)->delete();
+            return response()->json(["status" => "success", "message" => "Password Changed and Logout Successfully!"]);
         }
     }
 }
