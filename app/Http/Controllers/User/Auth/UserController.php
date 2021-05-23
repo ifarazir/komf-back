@@ -59,6 +59,7 @@ class UserController extends Controller
 
         if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){
             $user = Auth::user();
+            $user->tokens()->where('id', $user->currentAccessToken()->id)->delete();
             $token = $user->createToken('token')->plainTextToken;
 
             return response()->json(["status" => "success", "login" => true, "token" => $token, "data" => $user]);
