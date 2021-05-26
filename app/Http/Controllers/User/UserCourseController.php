@@ -43,7 +43,7 @@ class UserCourseController extends Controller
         //
         if (!is_null($course)) {
             if ($course->photo != null) {
-                $course['photo_url'] = 'storage/' . $course->photo->filePath();
+                $course['photo_url'] = asset('storage/' . $course->photo->filePath());
             }
             return response()->json(["status" => "success", "data" => $course->makeHidden(['created_at','updated_at','photo','photo_id'])], 200);
         } else {
