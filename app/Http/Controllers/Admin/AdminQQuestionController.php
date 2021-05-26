@@ -17,7 +17,7 @@ class AdminQQuestionController extends Controller
      */
     public function index()
     {
-        $QQuestions = QQuestion::paginate(5);
+        $QQuestions = QQuestion::all();
         if (count($QQuestions) > 0) {
             return response()->json(["status" => "success", "count" => count($QQuestions), "data" => $QQuestions->makeHidden(['created_at','updated_at'])], 200);
         } else {
