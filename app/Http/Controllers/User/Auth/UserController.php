@@ -97,6 +97,9 @@ class UserController extends Controller
             else {
                 $user->role = 'user';
             }
+            if ($course->photo != null) {
+                $user['photo_url'] = asset('storage/' . $user->photo->filePath());
+            }
             return response()->json(["status" => "success", "data" => $user->makeHidden('roles')]);
         }
 
