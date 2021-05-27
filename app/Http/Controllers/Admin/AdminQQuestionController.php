@@ -64,12 +64,11 @@ class AdminQQuestionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(QQuestion $QQuestion)
+    public function show(QQuestion $id)
     {
         //
-        dd($QQuestion);
-        if (!is_null($QQuestion)) {
-            return response()->json(["status" => "success", "data" => $QQuestion], 200);
+        if (!is_null($id)) {
+            return response()->json(["status" => "success", "data" => $id], 200);
         } else {
             return response()->json(["status" => "failed", "message" => "Failed! no Quiz Question found"], 200);
         }
