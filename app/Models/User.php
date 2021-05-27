@@ -25,6 +25,7 @@ class User extends Authenticatable
         'email',
         'password',
         'phone',
+        'photo_id'
     ];
 
     /**
@@ -54,6 +55,11 @@ class User extends Authenticatable
     public function progress()
     {
         return $this->belongsToMany(Lesson_Vocab::class, 'user_progress', 'user_id', 'lesson_vocab_id');
+    }
+
+    public function photo()
+    {
+        return $this->belongsTo(File::class,'photo_id');
     }
 
     public function calculateProgress(Lesson $lesson)

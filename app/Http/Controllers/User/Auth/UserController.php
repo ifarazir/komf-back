@@ -7,11 +7,18 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
-
+use App\Services\Uploader\Uploader;
 use App\Http\Controllers\Controller;
 
 class UserController extends Controller
 {
+    private $uploader;
+
+    public function __construct(Uploader $uploader)
+    {
+        $this->uploader = $uploader;
+    }
+
     // User Register
     public function register(Request $request) {
         $validator  =   Validator::make($request->all(), [
@@ -107,6 +114,18 @@ class UserController extends Controller
             User::where('id', $user->id)->update(['password' => Hash::make($request->new_password)]);
             $user->tokens()->where('id', $user->currentAccessToken()->id)->delete();
             return response()->json(["status" => "success", "message" => "Password Changed and Logout Successfully!"]);
+        }
+    }
+    
+    public function ChangeProfile(Request $request) {
+        if ($request->file('file') !== null) {
+            $file = $this->uploader->upload();
+            $user=Auth::user();
+            $user->update(['photo_id' => $file->id]);
+            return response()->json(["status" => "failed", "message" => "Profile Photo Updated Successfully!"]);
+        }
+        else {
+            return response()->json(["status" => "failed", "message" => "Profile Photo Required!"]);
         }
     }
 }

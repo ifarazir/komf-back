@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddPhotoIdToCoursesTable extends Migration
+class AddPhotoIdToUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,9 @@ class AddPhotoIdToCoursesTable extends Migration
      */
     public function up()
     {
-        Schema::table('courses', function (Blueprint $table) {
+        Schema::table('users', function (Blueprint $table) {
             $table->bigInteger('photo_id')->unsigned()->nullable();
             $table->foreign('photo_id')->references('id')->on('files')->onDelete('set null')->onChange('cascade');
-
         });
     }
 
@@ -27,7 +26,7 @@ class AddPhotoIdToCoursesTable extends Migration
      */
     public function down()
     {
-        Schema::table('courses', function (Blueprint $table) {
+        Schema::table('users', function (Blueprint $table) {
             $table->dropForeign(['photo_id']);
         });
     }
