@@ -39,7 +39,7 @@ class UserLessonController extends Controller
 
     public function LessonVocabs(Lesson $lesson)
     {
-        $vocabs = $lesson->vocabs->toArray();
+        $vocabs = $lesson->vocabs->makeHidden('pivot')->toArray();
 
         foreach ($vocabs as $vocab) {
             $l_v = DB::table('lesson_vocab')->where('vocab_id',$vocab['id'])->where('lesson_id',$lesson['id'])->first();
@@ -50,7 +50,7 @@ class UserLessonController extends Controller
             }
         }
         if (count($vocabs) == 0) {
-            $vocabs = $lesson->vocabs->toArray();
+            $vocabs = $lesson->vocabs->makeHidden('pivot')->toArray();
         }
         return response()->json(["status" => "success", "data" => $vocabs], 200);
     }
