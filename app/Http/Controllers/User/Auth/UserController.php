@@ -125,7 +125,7 @@ class UserController extends Controller
             $file = $this->uploader->upload();
             $user=Auth::user();
             $user->update(['photo_id' => $file->id]);
-            return response()->json(["status" => "failed", "message" => "Profile Photo Updated Successfully!"]);
+            return response()->json(["status" => "success", "message" => "Profile Photo Updated Successfully!"]);
         }
         else {
             return response()->json(["status" => "failed", "message" => "Profile Photo Required!"]);
