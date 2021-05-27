@@ -67,6 +67,7 @@ class AdminQQuestionController extends Controller
     public function show(QQuestion $QQuestion)
     {
         //
+        dd($QQuestion);
         if (!is_null($QQuestion)) {
             return response()->json(["status" => "success", "data" => $QQuestion], 200);
         } else {
