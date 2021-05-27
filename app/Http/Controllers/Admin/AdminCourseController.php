@@ -45,7 +45,10 @@ class AdminCourseController extends Controller
     {
         //
         if (!is_null($course)) {
-            return response()->json(["status" => "success", "data" => $course], 200);
+            if ($course->photo != null) {
+                $course['photo_url'] = asset('storage/' . $course->photo->filePath());
+            }
+            return response()->json(["status" => "success", "data" => $course->makeHidden(['created_at','updated_at','photo','photo_id'])], 200);
         } else {
             return response()->json(["status" => "failed", "message" => "Failed! no Course found"], 200);
         }
@@ -92,7 +95,6 @@ class AdminCourseController extends Controller
      */
     public function update(Request $request, Course $course)
     {
-        //
         $input = $request->all();
         $user = Auth::user();
 
