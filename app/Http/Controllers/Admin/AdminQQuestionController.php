@@ -64,11 +64,11 @@ class AdminQQuestionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(QQuestion $id)
+    public function show(QQuestion $question)
     {
         //
-        if (!is_null($id)) {
-            return response()->json(["status" => "success", "data" => $id], 200);
+        if (!is_null($question)) {
+            return response()->json(["status" => "success", "data" => $question->makeHidden(['updated_at', 'created_at'])], 200);
         } else {
             return response()->json(["status" => "failed", "message" => "Failed! no Quiz Question found"], 200);
         }
@@ -81,12 +81,12 @@ class AdminQQuestionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, QQuestion $QQuestion)
+    public function update(Request $request, QQuestion $question)
     {
         //
         $input = $request->all();
 
-        if (!is_null($QQuestion)) {
+        if (!is_null($question)) {
 
             // validation
             $validator = Validator::make($request->all(), [
@@ -104,7 +104,7 @@ class AdminQQuestionController extends Controller
             }
 
             // update post
-            $update = $QQuestion->update($request->all());
+            $update = $question->update($request->all());
 
             return response()->json(["status" => "success", "message" => "Success! Quiz Question updated", "data" => $update], 200);
         } else {
@@ -118,10 +118,10 @@ class AdminQQuestionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(QQuestion $QQuestion)
+    public function destroy(QQuestion $question)
     {
-        if(!is_null($QQuestion)) {
-            $QQuestion = Lesson::where("id", $QQuestion->id)->delete();
+        if(!is_null($question)) {
+            $question = Lesson::where("id", $question->id)->delete();
             return response()->json(["status" => "success", "message" => "Success! Quiz Question deleted"], 200);
         }
         else {

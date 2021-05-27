@@ -8,7 +8,7 @@ use App\Http\Controllers\Admin\AdminCourseController;
 use App\Http\Controllers\Admin\AdminVocabController;
 use App\Http\Controllers\Admin\AdminLessonController;
 use App\Http\Controllers\Admin\AdminQQuestionController;
-use App\Http\Controllers\Backend\FileController;
+use App\Http\Controllers\Admin\FileController;
 use App\Http\Controllers\User\UserCourseController;
 use App\Http\Controllers\User\UserVocabController;
 use App\Http\Controllers\User\UserLessonController;
@@ -55,7 +55,10 @@ Route::middleware('auth:api')->group(function () {
         Route::post('lessons/{lesson}/vocabs/add/', [AdminLessonController::class, "lessonVocabs"]);
         Route::resource('lessons', AdminLessonController::class)->only(['index', 'show', 'store', 'update', 'destroy']);
         Route::resource('vocabs', AdminVocabController::class);
-        Route::resource('quiz/questions', AdminQQuestionController::class);
+        
+        Route::group(['prefix' => 'quiz'], function() {
+            Route::resource('questions', AdminQQuestionController::class);
+        });
 
         Route::resource('file', FileController::class);
 
