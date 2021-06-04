@@ -73,7 +73,13 @@ class UserCourseController extends Controller
 
     public function UserCourses() {
         $user = Auth::user();
-        return response()->json(["status" => "success", "data" => $user->courses->makeHidden(['pivot', 'created_at', 'updated_at'])], 200);
+        $courses = $user->courses;
+        foreach ($courses as $course) {
+            if ($course->photo != null) {
+                $course['photo_url'] = 'storage/' . $course->photo->filePath();
+            }
+        }
+        return response()->json(["status" => "success", "data" => $courses->makeHidden(['created_at','updated_at','photo','photo_id'])], 200);
     }
 
     public function CourseLessons(Course $course) {
