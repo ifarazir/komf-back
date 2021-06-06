@@ -67,8 +67,16 @@ class UserController extends Controller
         if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){
             $user = Auth::user();
             $token = $user->createToken('token')->plainTextToken;
-
-            return response()->json(["status" => "success", "login" => true, "token" => $token, "data" => $user]);
+            if(isset($user->roles[0])){
+                $user->role = $user->roles[0]->name;
+            }
+            else {
+                $user->role = 'user';
+            }
+            if ($user->photo != null) {
+                $user['photo_url'] = asset('storage/' . $user->photo->filePath());
+            }
+            return response()->json(["status" => "success", "login" => true, "token" => $token, "data" => $user->makeHidden(['roles', 'photo', 'photo_id'])]);
         }
         else {
             return response()->json(["status" => "failed", "success" => false, "message" => "Whoops! invalid password"]);

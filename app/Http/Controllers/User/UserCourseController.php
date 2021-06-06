@@ -22,7 +22,7 @@ class UserCourseController extends Controller
         $courses = Course::with('lessons')->paginate(5);
         foreach ($courses as $course) {
             if ($course->photo != null) {
-                $course['photo_url'] = 'storage/' . $course->photo->filePath();
+                $course['photo_url'] = asset('storage/' . $course->photo->filePath());
             }
         }
         if (count($courses) > 0) {
@@ -76,10 +76,10 @@ class UserCourseController extends Controller
         $courses = $user->courses;
         foreach ($courses as $course) {
             if ($course->photo != null) {
-                $course['photo_url'] = 'storage/' . $course->photo->filePath();
+                $course['photo_url'] = asset('storage/' . $course->photo->filePath());
             }
         }
-        return response()->json(["status" => "success", "data" => $courses->makeHidden(['created_at','updated_at','photo','photo_id'])], 200);
+        return response()->json(["status" => "success", "data" => $courses->makeHidden(['created_at','updated_at','photo','photo_id', 'pivot'])], 200);
     }
 
     public function CourseLessons(Course $course) {
