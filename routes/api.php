@@ -36,6 +36,7 @@ Route::middleware('auth:api')->group(function () {
     Route::get("user", [UserController::class, "user"]);
     Route::post("user/ChangePassword", [UserController::class, "ChangePassword"]);
     Route::post("user/ChangeProfile", [UserController::class, "ChangeProfile"]);
+    Route::post("user/UpdateUser", [UserController::class, "EditUser"]);
     Route::post("logout", [UserController::class, "logout"]);
 
     Route::resource('courses', UserCourseController::class)->only(['index', 'show']);
