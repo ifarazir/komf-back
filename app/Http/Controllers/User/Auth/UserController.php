@@ -139,4 +139,22 @@ class UserController extends Controller
             return response()->json(["status" => "failed", "message" => "Profile Photo Required!"]);
         }
     }
+    
+    public function EditUser(Request $request) {
+        $input = $request->all();
+        $user = Auth::user();
+
+        $validator = Validator::make($request->all(), [
+            "fname" => "required",
+            "lname" => "required",
+            "phone" => "required"
+        ]);
+        if ($validator->fails()) {
+            return response()->json(["status" => "failed", "validation_errors" => $validator->errors()]);
+        }
+
+        $user->update($input);
+        return response()->json(["status" => "success", "message" => "Success! user updated", "data" => $course], 200);
+
+    }
 }
