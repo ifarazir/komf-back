@@ -53,6 +53,7 @@ Route::middleware('auth:api')->group(function () {
 
     Route::group(['prefix' => 'admin',  'middleware' => 'role:admin'], function () {
         Route::resource('courses', AdminCourseController::class)->only(['index', 'show', 'store', 'update', 'destroy']);
+        Route::post('courses/{course}/UpdatePhoto', [AdminCourseController::class, "UpdatePhoto"]);
         Route::post('lessons/{lesson}/vocabs/add/', [AdminLessonController::class, "lessonVocabs"]);
         Route::resource('lessons', AdminLessonController::class)->only(['index', 'show', 'store', 'update', 'destroy']);
         Route::resource('vocabs', AdminVocabController::class);

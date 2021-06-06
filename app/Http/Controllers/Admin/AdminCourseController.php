@@ -151,4 +151,17 @@ class AdminCourseController extends Controller
             return response()->json(["status" => "failed", "message" => "Un-authorized user"], 403);
         }
     }
+
+
+    public function UpdatePhoto(Course $course)
+    {
+        if ($request->file('file') !== null) {
+            $file = $this->uploader->upload();
+            $course->update(['photo_id' => $file->id]);
+            return response()->json(["status" => "success", "message" => "Course Photo Updated Successfully!"]);
+        }
+        else {
+            return response()->json(["status" => "failed", "message" => "Course Photo Required!"]);
+        }
+    }
 }
