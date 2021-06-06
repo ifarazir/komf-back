@@ -154,7 +154,16 @@ class UserController extends Controller
         }
 
         $user->update($input);
-        return response()->json(["status" => "success", "message" => "Success! user updated", "data" => $course], 200);
+        if ($user->photo != null) {
+            $user['photo_url'] = asset('storage/' . $user->photo->filePath());
+        }
+        if(isset($user->roles[0])){
+            $user->role = $user->roles[0]->name;
+        }
+        else {
+            $user->role = 'user';
+        }
+        return response()->json(["status" => "success", "message" => "Success! user updated", "data" => $user->makeHidden(['roles', 'photo', 'photo_id'])], 200);
 
     }
 }
