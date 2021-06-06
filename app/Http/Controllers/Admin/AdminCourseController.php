@@ -153,7 +153,7 @@ class AdminCourseController extends Controller
     }
 
 
-    public function UpdatePhoto(Course $course)
+    public function UpdatePhoto(Course $course, Request $request)
     {
         if ($request->file('file') !== null) {
             $file = $this->uploader->upload();
