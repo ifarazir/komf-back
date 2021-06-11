@@ -121,7 +121,7 @@ class AdminQQuestionController extends Controller
     public function destroy(QQuestion $question)
     {
         if(!is_null($question)) {
-            $question = Lesson::where("id", $question->id)->delete();
+            $question = QQuestion::where("id", $question->id)->delete();
             return response()->json(["status" => "success", "message" => "Success! Quiz Question deleted"], 200);
         }
         else {
