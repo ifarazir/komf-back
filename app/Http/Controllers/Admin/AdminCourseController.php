@@ -25,10 +25,14 @@ class AdminCourseController extends Controller
      */
     public function index()
     {
-        //
-        $courses = Course::paginate(5);
+        $courses = Course::with('lessons')->paginate(5);
+        foreach ($courses as $course) {
+            if ($course->photo != null) {
+                $course['photo_url'] = asset('storage/' . $course->photo->filePath());
+            }
+        }
         if (count($courses) > 0) {
-            return response()->json(["status" => "success", "count" => count($courses), "data" => $courses->makeHidden(['created_at', 'updated_at'])], 200);
+            return response()->json(["status" => "success", "count" => count($courses), "data" => $courses->makeHidden(['created_at','updated_at','photo','photo_id'])], 200);
         } else {
             return response()->json(["status" => "failed", "count" => count($courses), "message" => "Failed! no Course found"], 200);
         }
