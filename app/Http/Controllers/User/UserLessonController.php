@@ -52,6 +52,6 @@ class UserLessonController extends Controller
         if (count($vocabs) == 0) {
             $vocabs = $lesson->vocabs->makeHidden('pivot')->toArray();
         }
-        return response()->json(["status" => "success", "data" => $vocabs->toArray()], 200);
+        return response()->json(["status" => "success", "data" => $vocabs], 200);
     }
 }
