@@ -149,9 +149,9 @@ class AdminCourseController extends Controller
         $user = Auth::user();
 
         if (!is_null($user)) {
-            $course->users()->delete();
-            $course->lessons()->delete();
-
+            $course_users = $course->users;
+            $course->users()->detach($course_users);
+            
             $course = Course::where("id", $course->id)->delete();
             return response()->json(["status" => "success", "message" => "Success! Course deleted"], 200);
         } else {
