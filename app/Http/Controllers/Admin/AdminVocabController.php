@@ -18,7 +18,7 @@ class AdminVocabController extends Controller
     public function index()
     {
         //
-        $vocabs = Vocab::all();
+        $vocabs = Vocab::get();
         if (count($vocabs) > 0) {
             return response()->json(["status" => "success", "count" => count($vocabs), "data" => $vocabs->makeHidden(['created_at','updated_at'])], 200);
         } else {
