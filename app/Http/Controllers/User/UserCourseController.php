@@ -19,7 +19,7 @@ class UserCourseController extends Controller
      public function index()
     {
         //
-        $courses = Course::with('lessons')->all();
+        $courses = Course::with('lessons')->get();
         foreach ($courses as $course) {
             if ($course->photo != null) {
                 $course['photo_url'] = asset('storage/' . $course->photo->filePath());
