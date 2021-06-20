@@ -39,19 +39,20 @@ class UserLessonController extends Controller
 
     public function LessonVocabs(Lesson $lesson)
     {
-        // $vocabs = $lesson->vocabs->makeHidden('pivot')->toArray();
+        $vocabs = $lesson->vocabs->makeHidden('pivot')->toArray();
 
-        // foreach ($vocabs as $vocab) {
-        //     $l_v = DB::table('lesson_vocab')->where('vocab_id',$vocab['id'])->where('lesson_id',$lesson['id'])->first();
-        //     $lesson_check = DB::table('user_progress')->where('lesson_vocab_id',$l_v->id)->where('user_id',auth()->id())->first();
-        //     if (!is_null($lesson_check)) {
-        //         $key = array_search($vocab, $vocabs);
-        //         unset($vocabs[$key]);
-        //     }
-        // }
-        // if (count($vocabs) == 0) {
-        //     $vocabs = $lesson->vocabs->makeHidden('pivot')->toArray();
-        // }
-        // return response()->json(["status" => "success", "data" => $vocabs], 200);
+        foreach ($vocabs as $vocab) {
+            $l_v = DB::table('lesson_vocab')->where('vocab_id',$vocab['id'])->where('lesson_id',$lesson['id'])->first();
+            $lesson_check = DB::table('user_progress')->where('lesson_vocab_id',$l_v->id)->where('user_id',auth()->id())->first();
+            if (!is_null($lesson_check)) {
+                $key = array_search($vocab, $vocabs);
+                unset($vocabs[$key]);
+            }
+        }
+        if (count($vocabs) == 0) {
+            $vocabs = $lesson->vocabs->makeHidden('pivot')->toArray();
+        }
+        dd($vocabs);
+        return response()->json(["status" => "success", "data" => $vocabs], 200);
     }
 }
