@@ -55,4 +55,15 @@ class UserLessonController extends Controller
         }
         return response()->json(["status" => "success", "data" => $vocabs], 200);
     }
+
+    public function lessonCheck(Request $request)
+    {
+        $lesson_vocab = DB::table('lesson_vocab')->where('lesson_id',$request->lesson_id)->where('vocab_id',$request->vocab_id)->first();
+        if (!is_null($lesson_vocab)) {
+            auth()->user()->progress()->syncWithoutDetaching($lesson_vocab->id);
+            return response()->json(["status" => "success", "message" => "Succcess , lesson check"], 200);
+        } else {
+            return response()->json(["status" => "failed", "message" => "Failed! lesson doesnt have this vocab"], 200);
+        }
+    }
 }
